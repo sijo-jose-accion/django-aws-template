@@ -20,19 +20,19 @@ from django.conf import settings
 from rest_framework import routers
 
 from apps.authentication.api_views import AccountViewSet
+from apps.main.api_views import APIMessageViewSet
 
 # Rest APIs
 # =========
 v1_api_router = routers.DefaultRouter(trailing_slash=False)
 v1_api_router.register(r'account', AccountViewSet)
-
-
+v1_api_router.register(r'message', APIMessageViewSet)
 
 admin.autodiscover()
 
 urlpatterns = [
 
-    #url(r'^', include('server.main.urls')),
+    url(r'^', include('apps.main.urls')),
     url(r'^account/', include('apps.authentication.urls')),
 
     url(r'^admin/', include(admin.site.urls)),

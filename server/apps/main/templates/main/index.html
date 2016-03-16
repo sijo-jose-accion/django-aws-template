@@ -1,0 +1,14 @@
+{% templatetag openblock %}  extends "base.html" {% templatetag closeblock %}
+{% templatetag openblock %}  load staticfiles {% templatetag closeblock %}
+{% templatetag openblock %}  load i18n {% templatetag closeblock %}
+
+{% templatetag openblock %} block container {% templatetag closeblock %}
+<div class="container">
+
+    <div class="starter-template">
+        <h1>Welsome {{ user }}</h1>
+    </div>
+
+</div><!-- /.container -->
+{% templatetag openblock %} endblock container {% templatetag closeblock %}
+

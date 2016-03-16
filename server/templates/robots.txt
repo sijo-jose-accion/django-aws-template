@@ -1,0 +1,6 @@
+User-agent: *
+
+Disallow: /static/
+Disallow: /admin/
+Disallow: /api/
+

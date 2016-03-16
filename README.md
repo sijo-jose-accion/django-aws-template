@@ -29,10 +29,13 @@ $ django-admin.py startproject --template=https://github.com/dkarchmer/django-aw
 $ cd my_proj
 $ pip install -r requirements.txt
 $ cd server
-$ cp config/settings/local.sample.env config/settings/.local.env
+$ cp config/settings/sample-local.env config/settings/.local.env  # And edit to your liking
 $ python manage.py migrate
+$ python manage.py init-basic-data
 ```
-More information at: http://django-edge.readthedocs.org/
+
+`initadmin` will create a super user with username=admin, email=env(INITIAL_ADMIN_EMAIL) and password=admin.
+Make sure you change the password right away.
 
 *Rest of this README will be copied to the generated project.*
 

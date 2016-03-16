@@ -13,9 +13,10 @@ from django.contrib import messages
 import environ
 
 # Build paths inside the project like this: join(BASE_DIR, "directory")
-BASE_DIR = environ.Path(__file__) - 3
-LOG_FILE = BASE_DIR.path('logs')
-print('BASE_DIR = ' + str(BASE_DIR))
+BASE_PATH = environ.Path(__file__) - 3
+BASE_DIR = str(BASE_PATH)
+LOG_FILE = BASE_PATH.path('logs')
+print('BASE_DIR = ' + BASE_DIR)
 
 env = environ.Env(
     DJANGO_DEBUG=(bool, False),
@@ -23,12 +24,14 @@ env = environ.Env(
     RECAPTCHA_PRIVATE_KEY=(str, 'Changeme'),
     PRODUCTION=(bool, False),
     DOMAIN_NAME=(str, 'mydomain.com'),
+    DOMAIN_BASE_URL=(str, 'https://mydomain.com'),
     COMPANY_NAME=(str, 'COMPANY_NAME'),
+    INITIAL_ADMIN_EMAIL=(str, 'admin@mydomain.com')
 )
 
 ADMINS = (
     # ('Username', 'your_email@domain.com'),
-    ('admin', 'admin@mydomain.com'),
+    ('admin', env('INITIAL_ADMIN_EMAIL')),
 )
 
 SITE_ID = 1
@@ -106,6 +109,7 @@ THIRD_PARTY_APPS = (
 # Apps specific for this project go here.
 COMMON_APPS = (
     'apps.authentication',
+    'apps.main',
 )
 
 INSTALLED_APPS = DJANGO_APPS + COMMON_APPS + THIRD_PARTY_APPS
@@ -210,6 +214,6 @@ REST_FRAMEWORK = {
     ),
 
     'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
-    #'DEFAULT_PAGINATION_CLASS': 'apps.utils.pagination.StandardResultsSetPagination'
+    'DEFAULT_PAGINATION_CLASS': 'apps.utils.pagination.StandardResultsSetPagination'
 }
 
