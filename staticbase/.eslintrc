@@ -1,0 +1,16 @@
+{
+  "extends": "eslint:recommended",
+  "plugins": [],
+  "env": {
+    "browser": true,
+    "jasmine": true
+  },
+  "rules": {
+    "no-console": 0
+  },
+  "globals": {
+    "$": true,
+    "ga": true,
+    "getCookie": true
+  }
+}
