@@ -13,7 +13,7 @@ var es = require('event-stream');
 
 gulp.paths = {
     src: {
-        base: './staticbase'
+        base: './static-src'
     },
     statics: './staticfiles',
     dist: './staticfiles/dist',
