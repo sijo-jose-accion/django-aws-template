@@ -10,4 +10,6 @@
 .production.env
 .docker.env
 .local.env
+staticfiles/dist/
+server/templates/dist/
 

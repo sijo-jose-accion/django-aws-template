@@ -14,10 +14,10 @@ and djangorestframework for a rest API.
 
 ### Features ###
 
-- Ready Bootstrap-themed pages
+- Ready Bootstrap-themed, gulp based web pages
 - User Registration/Sign up with social login support (using django-allauth)
 - Ready to provide rest api for all models (using djangorestframework)
-- Gulp based flow to build CSS/JS files and release directly to s3/cloudfront
+- Gulp based flow to build CSS/JS files and release directly to s3/cloudfront (based on `yo webapp`)
 - Better Security with 12-Factor recommendations
 - Logging/Debugging Helpers
 - Works on Python 3.4+ (should work on 2.7+ but has not been actively tested)
@@ -28,7 +28,11 @@ and djangorestframework for a rest API.
 $ django-admin.py startproject --template=https://github.com/dkarchmer/django-aws-template/archive/master.zip --extension=py,md,html,env my_proj
 $ cd my_proj
 $ pip install -r requirements.txt
-$ cd server
+$ cd webapp
+$ npm install
+$ bower install
+$ gulp templates
+$ cd ../server
 $ cp config/settings/sample-local.env config/settings/.local.env  # And edit to your liking
 $ python manage.py migrate
 $ python manage.py init-basic-data

@@ -1,0 +1,42 @@
+{% templatetag openblock %}  extends "base.html" {% templatetag closeblock %}
+{% templatetag openblock %}  load staticfiles {% templatetag closeblock %}
+{% templatetag openblock %}  load i18n {% templatetag closeblock %}
+{% templatetag openblock %}  load tz {% templatetag closeblock %}
+
+{# Load CSS and JavaScript #}
+
+{% templatetag openblock %}  block js {% templatetag closeblock %}
+
+{% templatetag openblock %}  endblock {% templatetag closeblock %}
+
+{% templatetag openblock %}  block media {% templatetag closeblock %}
+
+    {{ form.media }}
+
+{% templatetag openblock %}  endblock {% templatetag closeblock %}
+
+{% templatetag openblock %}  block content {% templatetag closeblock %}
+
+    {% templatetag openblock %}  if title {% templatetag closeblock %}
+    <div class="row sp-text2 text-center"><h4>{{ title }}</h4></div>
+    {% templatetag openblock %}  endif {% templatetag closeblock %}
+
+    <div class="row" style="margin-top: 50px">
+        <div class="col-sm-8 col-sm-offset-2">
+
+            <form action="." method="post" class="form" enctype="multipart/form-data">
+                {% templatetag openblock %}  csrf_token {% templatetag closeblock %}
+
+                {{ form }}
+
+                <a href="{{ referer }}" type="button" value="CANCEL" class="custom-form-element custom-button1">CANCEL</a>
+                <button type="submit" class="custom-form-element custom-button2" >
+                    SUBMIT
+                </button>
+            </form>
+
+        </div>
+    </div>
+
+
+{% templatetag openblock %}  endblock {% templatetag closeblock %}
