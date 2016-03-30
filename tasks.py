@@ -50,8 +50,16 @@ def ssh(type='server'):
     run('eb ssh')
 
 @task
-def local_build():
-    run('gulp build_local_all')
+def webapp_build():
+    os.chdir('webapp')
+    run('gulp templates')
+
+@task
+def initial_build():
+    os.chdir('webapp')
+    run('npm install')
+    run('bower install')
+    run('gulp templates')
 
 
 

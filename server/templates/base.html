@@ -2,52 +2,18 @@
 {% templatetag openblock %} load i18n {% templatetag closeblock %}
 {% templatetag openblock %} load staticfiles {% templatetag closeblock %}
 
-{% templatetag openblock %} block body {% templatetag closeblock %}
-    {% templatetag openblock %} block navbar {% templatetag closeblock %}
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{% templatetag openblock %} url 'home' {% templatetag closeblock %}">
-            {% templatetag openblock %} block navbar-brand {% templatetag closeblock %}
-              <img src="{% templatetag openblock %} static 'site/img/logo.png' {% templatetag closeblock %}" alt="logo">
-              {{ project_name|title }}
-            {% templatetag openblock %} endblock {% templatetag closeblock %}
-          </a>
-        </div>
-        {% templatetag openblock %} block navbar-menu {% templatetag closeblock %}
-        <div class="collapse navbar-collapse">
-          <ul class="nav navbar-nav">
-            {% templatetag openblock %} block navbar-left {% templatetag closeblock %}{% templatetag openblock %} endblock {% templatetag closeblock %}
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            {% templatetag openblock %} block navbar-right {% templatetag closeblock %}
-              {% templatetag openblock %} if user.is_authenticated {% templatetag closeblock %}
-                {% templatetag openblock %} if user.is_staff {% templatetag closeblock %}
-                <li><a href="{% templatetag openblock %} url 'admin:index' {% templatetag closeblock %}">Admin</a></li>
-                {% templatetag openblock %} endif {% templatetag closeblock %}
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle profile-menu" data-toggle="dropdown">
-			{% templatetag openvariable %} user.get_full_name|truncatechars:20 {% templatetag closevariable %}
-			<span class="caret"></span>
-		    </a>
 
-                  <ul class="dropdown-menu" role="menu">
-                    <li><a href="{% templatetag openblock %} url 'account_logout' {% templatetag closeblock %}">Logout</a></li>
-                  </ul>
-                </li>
-              {% templatetag openblock %} endif {% templatetag closeblock %}
-            {% templatetag openblock %} endblock {% templatetag closeblock %}
-          </ul>
-          </ul>
-        </div><!--/.nav-collapse -->
+{% templatetag openblock %} block body {% templatetag closeblock %}
+    <div class="container">
+      <div class="header">
+        {% templatetag openblock %} block navbar {% templatetag closeblock %}
+        <ul class="nav nav-pills pull-right">
+          <li class="active"><a href="/">Home</a></li>
+          <li><a href="#">About</a></li>
+        </ul>
+        <h3 class="text-muted">{{ project_name }}</h3>
         {% templatetag openblock %} endblock {% templatetag closeblock %}
-    </div>
-    {% templatetag openblock %} endblock navbar {% templatetag closeblock %}
+      </div>
 
     {% templatetag openblock %} block messages {% templatetag closeblock %}
       {% templatetag openblock %} if messages {% templatetag closeblock %}
@@ -60,38 +26,24 @@
       {% templatetag openblock %} endif {% templatetag closeblock %}
     {% templatetag openblock %} endblock {% templatetag closeblock %}
 
-    {% templatetag openblock %} block splash {% templatetag closeblock %}
-    {% templatetag openblock %} endblock splash {% templatetag closeblock %}
-
-    {% templatetag openblock %} block container {% templatetag closeblock %}
-    <div class="container">
-
-      <div class="starter-template">
-        <h1>New Project</h1>
-        <p class="lead">Use this document as a way to quickly start any new project.<br> All you get is this text and a mostly barebones HTML document.</p>
+    {% templatetag openblock %} block content {% templatetag closeblock %}
+      <div class="jumbotron">
+        <h1>'Allo, 'Allo!</h1>
+        <p class="lead">Always a pleasure scaffolding your apps.</p>
+        <p><a class="btn btn-lg btn-success" href="#">Splendid!</a></p>
       </div>
 
-    </div><!-- /.container -->
-    {% templatetag openblock %} endblock container {% templatetag closeblock %}
-
-    <!-- Site footer -->
-    {% templatetag openblock %} block footer {% templatetag closeblock %}
-      <!-- Some social button for contact will do -->
-      <a name="contact"></a>
-      <div class="container">
-            <div class="footer">
-        <div class="row">
-          <div class="col-lg-6">
-              <p>&copy; Company {% templatetag openblock %} now 'Y' {% templatetag closeblock %}</p>
-          </div>
-          <div class="col-lg-6 text-right">
-            Connect with us on
-            <a href="#"><i class="fa fa-facebook"></i> Facebook</a> or
-            <a href="#"><i class="fa fa-twitter"></i> Twitter</a>
-          </div>
+      <div class="row marketing">
+        <div class="col-lg-6">
+           <p>Template generated with <a href="https://github.com/dkarchmer/django-aws-template">django-aws-template</a><p>
         </div>
-            </div>
       </div>
     {% templatetag openblock %} endblock {% templatetag closeblock %}
+
+      <div class="footer">
+        <p>♥ django_aws_template </p>
+      </div>
+    </div>
 {% templatetag openblock %} endblock {% templatetag closeblock %}
+
 
