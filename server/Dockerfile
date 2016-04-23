@@ -18,7 +18,8 @@ RUN apt-get update && \
 ENV PYTHONUNBUFFERED 1
 RUN mkdir /var/app
 WORKDIR  /var/app
-COPY requirements.txt /var/app/requirements.txt
+COPY requirements /var/app/requirements
+ADD requirements.txt /var/app/requirements.txt
 RUN pip install -U pip
 RUN pip install -r requirements.txt
 RUN pip install gunicorn
