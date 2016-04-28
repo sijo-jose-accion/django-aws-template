@@ -1,1 +1,4 @@
--r requirements/development.txt
+awscli>=1.10.13
+awsebcli>=3.7.3
+docker-compose>=1.6.2
+invoke>=0.12.2

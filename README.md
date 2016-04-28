@@ -26,13 +26,13 @@ and djangorestframework for a rest API.
 
 ```
 $ django-admin.py startproject --template=https://github.com/dkarchmer/django-aws-template/archive/master.zip --extension=py,md,html,env my_proj
-$ cd my_proj/server
 $ pip install -r requirements.txt
-$ cd ../webapp
+$ cd webapp
 $ npm install
 $ bower install
 $ gulp templates
 $ cd ../server
+$ pip install -r development.txt
 $ cp config/settings/sample-local.env config/settings/.local.env  # And edit to your liking
 $ python manage.py migrate
 $ python manage.py init-basic-data
