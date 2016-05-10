@@ -35,10 +35,10 @@ gulp.task('clean', function(cb) {
     return del([gulp.paths.dist + '/*'], cb)
 });
 
-gulp.task( 'base', [], function () {
-    return gulp.src( gulp.paths.src.base +'/gulpfile.js', { read: false } )
+gulp.task( 'base', ['clean'], function () {
+    return gulp.src( gulp.paths.src.base +'/gulpfile.babel.js', { read: false } )
         .pipe( chug({
-            tasks:  [ 'templates' ]
+            tasks:  [  ]
         }) )
 });
 
