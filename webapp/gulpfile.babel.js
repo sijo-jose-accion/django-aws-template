@@ -74,6 +74,7 @@ gulp.task('html', ['styles', 'scripts'], () => {
     .pipe($.if('*.css', $.cssnano()))
     .pipe($.if('*.js', $.rev()))
     .pipe($.if('*.css', $.rev()))
+    .pipe($.revReplace())
     .pipe($.if('*.html', $.htmlmin({collapseWhitespace: true})))
     .pipe(gulp.dest(config.dist))
     .pipe($.rev.manifest())
@@ -184,19 +185,11 @@ gulp.task('other', () => {
     .pipe(gulp.dest(config.otherDist));
 });
 
-gulp.task("revreplace", ["build"], () => {
-  var manifest = gulp.src("./" + config.dist + "/rev-manifest.json");
-
-  return gulp.src(config.dist + "/index.html")
-    .pipe($.revReplace({manifest: manifest}))
-    .pipe(gulp.dest(config.dist));
-});
-
 gulp.task('build', ['lint', 'html', 'images', 'fonts', 'extras'], () => {
   return gulp.src(config.dist + '/**/*').pipe($.size({title: 'build', gzip: true}));
 });
 
-gulp.task('templates', ['revreplace'], () => {
+gulp.task('templates', ['build'], () => {
   // Black Magic to convert all static references to use django's 'static' templatetags
   return gulp.src(config.dist + '/*.html')
         .pipe(replace(/href="app([/]\S*)"/g, 'href="{% static \'dist/webapp/app$1\' %}"'))
