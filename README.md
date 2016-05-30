@@ -25,6 +25,9 @@ and djangorestframework for a rest API.
 ### Quick start: ###
 
 ```
+$ python3 -m venv .virtualenv/my_proj
+$ . .virtualenv/my_proj/bin/activate
+$ pip install django
 $ django-admin.py startproject --template=https://github.com/dkarchmer/django-aws-template/archive/master.zip --extension=py,md,html,env,json my_proj
 $ pip install -r requirements.txt
 $ cd webapp
@@ -38,8 +41,23 @@ $ python manage.py migrate
 $ python manage.py init-basic-data
 ```
 
-`initadmin` will create a super user with username=admin, email=env(INITIAL_ADMIN_EMAIL) and password=admin.
+`init-basic-data` will create a super user with username=admin, email=env(INITIAL_ADMIN_EMAIL) and password=admin.
 Make sure you change the password right away.
+It also creates django-allauth SocialApp records for Facebook, Google and Twitter (to avoid later errors). You will have to modify these records (from admin pages) with your own secret keys, or remove these social networks from the settings.
+
+### Using Django: ###
+
+I am not documenting how to install the template with docker, so you will need a local copy of python and django to install the template, but once installed (i.e., the project is on your file system), you can use docker for everything else
+
+To use docker to build the static files, you can use the top level Dockerfile image:
+
+```
+docker build -t my_proj/builder . 
+docker run --rm -i -v ${PWD}/webapp:/usr/src/app/webapp \
+                   -v ${PWD}/staticfiles/dist:/usr/src/app/staticfiles/dist
+                   -v ${PWD}/server/templates/dist:/usr/src/app/server/templates/dist
+                   -t my_proj/builder
+```
 
 *Rest of this README will be copied to the generated project.*
 
