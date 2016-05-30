@@ -1,4 +1,4 @@
-FROM node:4.2.6
+FROM node:4
 # ==========================================================
 # Docker Image used for Building Gulp based systems
 # Usage:
