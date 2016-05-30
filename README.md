@@ -53,10 +53,12 @@ To use docker to build the static files, you can use the top level Dockerfile im
 
 ```
 docker build -t my_proj/builder . 
+docker run --rm -v ${PWD}/webapp:/usr/src/app/webapp --entrypoint npm -t my_proj/builder install
+docker run --rm -v ${PWD}/webapp:/usr/src/app/webapp --entrypoint bower -t my_proj/builder install
 docker run --rm -i -v ${PWD}/webapp:/usr/src/app/webapp \
                    -v ${PWD}/staticfiles/dist:/usr/src/app/staticfiles/dist
                    -v ${PWD}/server/templates/dist:/usr/src/app/server/templates/dist
-                   -t my_proj/builder
+                   -t my_proj/builder templates
 ```
 
 *Rest of this README will be copied to the generated project.*
