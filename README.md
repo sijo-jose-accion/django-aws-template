@@ -70,25 +70,58 @@ docker run --rm -i -v ${PWD}/webapp:/usr/src/app/webapp \
 Project is built with Python using the Django Web Framework.
 It is based on the django-aws-template (https://github.com/dkarchmer/django-aws-template)
 
-This project has the following basic apps:
+This project has the following basic features:
 
-App1 (short desc)
-App2 (short desc)
-App3 (short desc)
-Installation
+* Custom Authentication Model with django-allauth
+* Rest API
 
-Quick start
+## Installation ##
+
+### Assumptions ###
+
+You must have the following installed on your computer
+
+* Python 3.4 or greater
+* Docker
+* nodeJS
+* bower
+
+For MacOS, see https://gist.github.com/dkarchmer/d8124f3ae1aa498eea8f0d658be214a5
+
+### Python Environment ###
 
 To set up a development environment quickly, first install Python 3. It comes with virtualenv built-in. So create a virtual env by:
 
-1. `$ python3 -m venv {{ project_name }}`
-2. `$ . {{ project_name }}/bin/activate`
-Install all dependencies:
+```
+$ python3 -m venv  ~/.virtualenv/iotile
+$ .  ~/.virtualenv/iotile/bin/activate
+$ pip install -U pip
+$ pip install -r requirements.txt
+$ pip install -r server/requirements.txt
+```
 
-pip install -r requirements.txt
-Run migrations:
+### Static Files ###
 
-python manage.py migrate
-Detailed instructions
+We use nodeJS with Gulp and Bower to process static files:
 
-Take a look at the docs for more information.
+```
+$ cd webapp
+$ bower install
+$ npm install
+$ gulp
+```
+
+### Database ###
+
+To create database (SQLite3 for development), run
+
+```
+$ python manage.py migrate
+$ python manage.py init-basic-data
+```
+
+### Testing ###
+
+```
+$ python manage.py test
+```
