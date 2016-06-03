@@ -234,6 +234,7 @@ SOCIALACCOUNT_QUERY_EMAIL = True
 SOCIALACCOUNT_AUTO_SIGNUP = True
 SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
 #SOCIALACCOUNT_EMAIL_REQUIRED = False
+'''
 SOCIALACCOUNT_PROVIDERS = {
     'facebook': {
         'SCOPE': ['email', 'public_profile'],
@@ -257,6 +258,7 @@ SOCIALACCOUNT_PROVIDERS = {
         'AUTH_PARAMS': { 'access_type': 'online' }
     }
 }
+'''
 ACCOUNT_USER_MODEL_USERNAME_FIELD = 'username'
 ACCOUNT_USER_MODEL_EMAIL_FIELD= 'email'
 ACCOUNT_UNIQUE_EMAIL = True
@@ -264,8 +266,10 @@ ACCOUNT_USERNAME_REQUIRED = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
-
-ACCOUNT_FORMS = { 'signup': 'apps.authentication.forms.AllauthSignupForm'}
+ACCOUNT_FORMS = {
+    'login': 'apps.authentication.forms.AllauthLoginForm',
+    'signup': 'apps.authentication.forms.AllauthSignupForm'
+}
 
 LOGGING = {
     'version': 1,

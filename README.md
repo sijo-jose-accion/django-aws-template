@@ -29,21 +29,7 @@ $ python3 -m venv .virtualenv/my_proj
 $ . .virtualenv/my_proj/bin/activate
 $ pip install django
 $ django-admin.py startproject --template=https://github.com/dkarchmer/django-aws-template/archive/master.zip --extension=py,md,html,env,json my_proj
-$ pip install -r requirements.txt
-$ cd webapp
-$ npm install
-$ bower install
-$ gulp templates
-$ cd ../server
-$ pip install -r development.txt
-$ cp config/settings/sample-local.env config/settings/.local.env  # And edit to your liking
-$ python manage.py migrate
-$ python manage.py init-basic-data
 ```
-
-`init-basic-data` will create a super user with username=admin, email=env(INITIAL_ADMIN_EMAIL) and password=admin.
-Make sure you change the password right away.
-It also creates django-allauth SocialApp records for Facebook, Google and Twitter (to avoid later errors). You will have to modify these records (from admin pages) with your own secret keys, or remove these social networks from the settings.
 
 ### Using Django: ###
 
@@ -111,6 +97,12 @@ $ npm install
 $ gulp
 ```
 
+But we also need all static files for third party Django libraries
+
+```
+$ python manage.py collecstatic
+```
+
 ### Database ###
 
 To create database (SQLite3 for development), run
@@ -119,6 +111,12 @@ To create database (SQLite3 for development), run
 $ python manage.py migrate
 $ python manage.py init-basic-data
 ```
+
+`init-basic-data` will create a super user with username=admin, email=env(INITIAL_ADMIN_EMAIL) and password=admin.
+Make sure you change the password right away.
+It also creates django-allauth SocialApp records for Facebook, Google and Twitter (to avoid later errors). You will have to modify these records (from admin pages) with your own secret keys, or remove these social networks from the settings.
+
+
 
 ### Testing ###
 

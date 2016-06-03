@@ -8,6 +8,9 @@ from django.conf import settings
 from django.core.exceptions import ValidationError
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout, Field
+
 from allauth.account.forms import SignupForm, LoginForm
 
 from .models import Account
@@ -54,7 +57,24 @@ class AccountUpdateForm(ModelForm):
 
 class AllauthSignupForm(SignupForm):
     """Base form for django-allauth to use, adding a ReCaptcha function"""
-    captcha = ReCaptchaField()
+
+    # captcha = ReCaptchaField()
+
+    def __init__(self, *args, **kwargs):
+        super(AllauthSignupForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Sign Up', css_class='btn btn-lg btn-success btn-block'))
+
+
+class AllauthLoginForm(LoginForm):
+    def __init__(self, *args, **kwargs):
+        super(AllauthLoginForm, self).__init__(*args, **kwargs)
+        self.fields['password'].widget = forms.PasswordInput()
+
+        self.helper = FormHelper()
+        self.helper.form_method = 'post'
+        self.helper.add_input(Submit('submit', 'Sign In', css_class='btn btn-lg btn-success btn-block'))
 
 
 class AdminUserCreationForm(forms.ModelForm):

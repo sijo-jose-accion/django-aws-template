@@ -1,0 +1,20 @@
+{% extends "account/base.html" %}
+
+{% load crispy_forms_tags %}
+{% load i18n %}
+
+{% block head_title %}{% trans "Sign Up" %}{% endblock %}
+
+{% block content %}
+
+    <h1>{% trans "Sign Up" %}</h1>
+
+    <div class="row" style="margin-top: 50px">
+        <div class="col-sm-8 col-sm-offset-2">
+
+        {% crispy form %}
+
+        </div>
+    </div>
+
+{% endblock %}

@@ -2,6 +2,8 @@ from django.conf import settings
 from django.core.management.base import BaseCommand
 from django.contrib.sites.shortcuts import get_current_site
 from django.contrib.sites.models import Site
+
+from allauth.account.models import EmailAddress
 from allauth.socialaccount.models import SocialApp
 
 from apps.authentication.models import Account
@@ -19,6 +21,7 @@ class Command(BaseCommand):
             admin.is_active = True
             admin.is_admin = True
             admin.save()
+            EmailAddress.objects.create(email=email, user=admin, verified=True, primary=True)
 
     def _create_social_accounts(self, site):
         # For test/stage, also create dummy Facebook setup
