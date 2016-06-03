@@ -29,11 +29,6 @@ env = environ.Env(
     INITIAL_ADMIN_EMAIL=(str, 'admin@mydomain.com')
 )
 
-ADMINS = (
-    # ('Username', 'your_email@domain.com'),
-    ('admin', env('INITIAL_ADMIN_EMAIL')),
-)
-
 SITE_ID = 1
 
 # Use Django templates using the new Django 1.8 TEMPLATES settings
@@ -67,6 +62,11 @@ TEMPLATES = [
 env_file = os.path.join(os.path.dirname(__file__), '.local.env')
 if os.path.exists(env_file):
     environ.Env.read_env(str(env_file))
+
+ADMINS = (
+    # ('Username', 'your_email@domain.com'),
+    ('admin', env('INITIAL_ADMIN_EMAIL')),
+)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
