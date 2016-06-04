@@ -31,22 +31,6 @@ $ pip install django
 $ django-admin.py startproject --template=https://github.com/dkarchmer/django-aws-template/archive/master.zip --extension=py,md,html,env,json my_proj
 ```
 
-### Using Django: ###
-
-I am not documenting how to install the template with docker, so you will need a local copy of python and django to install the template, but once installed (i.e., the project is on your file system), you can use docker for everything else
-
-To use docker to build the static files, you can use the top level Dockerfile image:
-
-```
-docker build -t my_proj/builder . 
-docker run --rm -v ${PWD}/webapp:/usr/src/app/webapp --entrypoint npm -t my_proj/builder install
-docker run --rm -v ${PWD}/webapp:/usr/src/app/webapp --entrypoint bower -t my_proj/builder install
-docker run --rm -i -v ${PWD}/webapp:/usr/src/app/webapp \
-                   -v ${PWD}/staticfiles/dist:/usr/src/app/staticfiles/dist
-                   -v ${PWD}/server/templates/dist:/usr/src/app/server/templates/dist
-                   -t my_proj/builder templates
-```
-
 *Rest of this README will be copied to the generated project.*
 
 {% endcomment %}
@@ -100,6 +84,7 @@ $ gulp
 But we also need all static files for third party Django libraries
 
 ```
+cd ../server
 $ python manage.py collecstatic
 ```
 
@@ -108,6 +93,7 @@ $ python manage.py collecstatic
 To create database (SQLite3 for development), run
 
 ```
+$ cd ../server
 $ python manage.py migrate
 $ python manage.py init-basic-data
 ```
@@ -121,5 +107,35 @@ It also creates django-allauth SocialApp records for Facebook, Google and Twitte
 ### Testing ###
 
 ```
+$ cd ../server
 $ python manage.py test
 ```
+
+### Using Docker: ###
+
+I am not documenting how to install the template with docker, so you will need a local copy of python and django to install the template, but once installed (i.e., the project is on your file system), you can use docker for everything else
+
+Docker can be used to avoid having to install nodejs and python specific packages.
+
+To build the webapp static file (this part is not fully tested)
+
+```
+docker build -t my_proj/builder .
+docker run --rm -v ${PWD}/webapp:/usr/src/app/webapp --entrypoint bower -t my_proj/builder install
+docker run --rm -i -v ${PWD}/webapp:/usr/src/app/webapp \
+                   -v ${PWD}/staticfiles/dist:/usr/src/app/staticfiles/dist
+                   -v ${PWD}/server/templates/dist:/usr/src/app/server/templates/dist
+                   -t my_proj/builder templates
+```
+
+After the webapp static files have been build, Docker Compose can be used to run the whole server, including a proper
+Postgres database. Note this is not intended for Production. For production, AWS Elastic Beanstalk should be used.
+
+```
+docker-compose -f docker-compose.utest.yml     # To run a test using docker
+docker-compose -f docker-compose.yml           # To run server
+```
+
+### Deployment ###
+
+To be documented
