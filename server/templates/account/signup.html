@@ -1,20 +1,22 @@
-{% extends "account/base.html" %}
+{% templatetag openblock %} extends "account/base.html" {% templatetag closeblock %}
 
-{% load crispy_forms_tags %}
-{% load i18n %}
+{% templatetag openblock %} load crispy_forms_tags {% templatetag closeblock %}
+{% templatetag openblock %} load i18n {% templatetag closeblock %}
 
-{% block head_title %}{% trans "Sign Up" %}{% endblock %}
+{% templatetag openblock %} block head_title {% templatetag closeblock %}
+    {% templatetag openblock %} trans "Sign Up" {% templatetag closeblock %}
+{% templatetag openblock %} endblock {% templatetag closeblock %}
 
-{% block content %}
+{% templatetag openblock %} block content {% templatetag closeblock %}
 
-    <h1>{% trans "Sign Up" %}</h1>
+    <h1>{% templatetag openblock %} trans "Sign Up" {% templatetag closeblock %}</h1>
 
     <div class="row" style="margin-top: 50px">
         <div class="col-sm-8 col-sm-offset-2">
 
-        {% crispy form %}
+        {% templatetag openblock %} crispy form {% templatetag closeblock %}
 
         </div>
     </div>
 
-{% endblock %}
+{% templatetag openblock %} endblock {% templatetag closeblock %}

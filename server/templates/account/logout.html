@@ -1,21 +1,25 @@
-{% extends "account/base.html" %}
+{% templatetag openblock %} extends "account/base.html" {% templatetag closeblock %}
 
-{% load i18n %}
+{% templatetag openblock %} load i18n {% templatetag closeblock %}
 
-{% block head_title %}{% trans "Sign Out" %}{% endblock %}
+{% templatetag openblock %} block head_title {% templatetag closeblock %}
+   {% templatetag openblock %} trans "Sign Out" {% templatetag closeblock %}
+{% templatetag openblock %} endblock {% templatetag closeblock %}
 
-{% block content %}
-<h1>{% trans "Sign Out" %}</h1>
+{% templatetag openblock %} block content {% templatetag closeblock %}
+<h1>{% templatetag openblock %} trans "Sign Out" {% templatetag closeblock %}</h1>
 
-<p>{% trans 'Are you sure you want to sign out?' %}</p>
+<p>{% templatetag openblock %} trans 'Are you sure you want to sign out?' {% templatetag closeblock %}</p>
 
-<form method="post" action="{% url 'account_logout' %}">
-  {% csrf_token %}
-  {% if redirect_field_value %}
+<form method="post" action="{% templatetag openblock %} url 'account_logout' {% templatetag closeblock %}">
+  {% templatetag openblock %} csrf_token {% templatetag closeblock %}
+  {% templatetag openblock %} if redirect_field_value {% templatetag closeblock %}
   <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-  {% endif %}
-  <button type="submit" class="btn btn-success btn-block">{% trans 'Sign Out' %}</button>
+  {% templatetag openblock %} endif {% templatetag closeblock %}
+  <button type="submit" class="btn btn-success btn-block">
+      {% templatetag openblock %} trans 'Sign Out' {% templatetag closeblock %}
+  </button>
 </form>
 
 
-{% endblock %}
+{% templatetag openblock %} endblock {% templatetag closeblock %}
