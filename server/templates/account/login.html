@@ -13,8 +13,10 @@
     <h1>{% templatetag openblock %} trans "Sign In" {% templatetag closeblock %}</h1>
 
     <p>
-        {% templatetag openblock %} blocktrans {% templatetag closeblock %}If you have not created an account yet, then please
-        <a href="{{ signup_url }}">sign up</a> first.{% templatetag openblock %} endblocktrans {% templatetag closeblock %}
+        {% templatetag openblock %} blocktrans {% templatetag closeblock %}
+            If you have not created an account yet, then please
+            <a href="{% templatetag openvariable %} signup_url {% templatetag closevariable %}">sign up</a> first.
+        {% templatetag openblock %} endblocktrans {% templatetag closeblock %}
     </p>
 
     <div class="row" style="margin-top: 50px">

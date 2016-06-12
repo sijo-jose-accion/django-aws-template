@@ -2,7 +2,7 @@ import os
 from invoke import run, task
 
 AWS_PROFILE = 'myprofile'
-AWS_REGION  = 'us-east-1'
+AWS_REGION  = 'myawsregion'
 
 DEFAULT_SERVER_APP_NAME = 'mydomain'
 DEFAULT_SERVER_ENV_NAME = 'mydomain-1'
@@ -39,7 +39,7 @@ def deploy(type='server'):
         # third party packages are added, a local python manage.py collectstatic
         # will have to be run to move static files for that package to /staticfiles
 
-        run('gulp')
+        run('gulp deploy')
     os.chdir('server')
     run('eb deploy --region={region}'.format(region=AWS_REGION))
 

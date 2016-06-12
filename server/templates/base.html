@@ -8,8 +8,13 @@
       <div class="header">
         {% templatetag openblock %} block navbar {% templatetag closeblock %}
         <ul class="nav nav-pills pull-right">
-          <li class="active"><a href="/">Home</a></li>
+          <li><a href="/">Home</a></li>
           <li><a href="#">About</a></li>
+          {% templatetag openblock %} if user.is_authenticated {% templatetag closeblock %}
+              <li><a href="/account/logout">Sign Out</a></li>
+          {% templatetag openblock %} else {% templatetag closeblock %}
+              <li><a href="/account/login">Sign In</a></li>
+          {% templatetag openblock %} endif {% templatetag closeblock %}
         </ul>
         <h3 class="text-muted">{{ project_name }}</h3>
         {% templatetag openblock %} endblock {% templatetag closeblock %}

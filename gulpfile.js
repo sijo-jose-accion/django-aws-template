@@ -20,10 +20,10 @@ gulp.paths = {
 
 var aws = {
     params: {
-        Bucket: "mybucket",
-        Region: "us-east-1"
+        Bucket: "mystaticbucket",
+        Region: "myawsregion"
     },
-    "distributionId": "XYZ123"
+    "distributionId": "mycloudfrontdistributionid"
 };
 
 var publisher = awspublish.create(aws);
@@ -54,5 +54,5 @@ gulp.task('deploy', ['base'], function () {
         .pipe(cloudfront(aws));
 });
 
-gulp.task('default', ['deploy']);
+gulp.task('default', ['base']);
 

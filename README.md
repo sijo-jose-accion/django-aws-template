@@ -33,8 +33,11 @@ $ django-admin.py startproject --template=https://github.com/dkarchmer/django-aw
 
 The do the following manual work:
 
-* Search and replace `mydomain.com` with your own domain
+* Search and replace `mydomain` with your own domain
 * Search and replace `mystaticbucket` with your own S3 Bucket Name
+* Search and replace `myawsregion` with your own AWS_REGION
+* Search and replace `myawsprofile` with your own profile. Use `default` if you created the default one from `aws configure`
+* Search and replace `mycloudfrontdistributionid` with your CloudFront Distribution ID
 * Search  `need-value` and add the appropriate value based on your setup
 
 *Rest of this README will be copied to the generated project.*
@@ -147,4 +150,14 @@ docker-compose -f docker-compose.yml           # To run server
 
 ### Deployment ###
 
-To be documented
+To be completed but something like:
+
+```
+invoke create
+```
+
+and then deploy changes with
+
+```
+invoke deploy
+```

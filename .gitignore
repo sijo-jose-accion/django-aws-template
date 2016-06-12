@@ -11,6 +11,8 @@
 .production.env
 .docker.env
 .local.env
-staticfiles/dist/
+*.log
+staticfiles/*
+!staticfiles/README.md
 server/templates/dist/
 
