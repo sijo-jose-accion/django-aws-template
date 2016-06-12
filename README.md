@@ -31,6 +31,12 @@ $ pip install django
 $ django-admin.py startproject --template=https://github.com/dkarchmer/django-aws-template/archive/master.zip --extension=py,md,html,env,json my_proj
 ```
 
+The do the following manual work:
+
+* Search and replace `mydomain.com` with your own domain
+* Search and replace `mystaticbucket` with your own S3 Bucket Name
+* Search  `need-value` and add the appropriate value based on your setup
+
 *Rest of this README will be copied to the generated project.*
 
 {% endcomment %}
@@ -68,6 +74,9 @@ $ .  ~/.virtualenv/iotile/bin/activate
 $ pip install -U pip
 $ pip install -r requirements.txt
 $ pip install -r server/requirements.txt
+$ cp server/config/settings/sample-local.env server/config/settings/.local.env
+$ cp server/config/settings/sample-docker.env server/config/settings/.docker.env
+$ cp server/config/settings/sample-production.env server/config/settings/.production.env
 ```
 
 ### Static Files ###
