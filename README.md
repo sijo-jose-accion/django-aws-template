@@ -133,6 +133,7 @@ To build the webapp static file (this part is not fully tested)
 
 ```
 docker build -t my_proj/builder webapp
+docker run --rm -v ${PWD}/webapp:/usr/src/app --entrypoint npm -t my_proj/builder install
 docker run --rm -v ${PWD}/webapp:/usr/src/app --entrypoint bower -t my_proj/builder --allow-root --config.interactive=false install
 docker run --rm -v ${PWD}:/usr/src/app -t my_proj/builder templates
 ```
