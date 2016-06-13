@@ -9,8 +9,7 @@ RUN adduser --disabled-password --gecos '' myuser
 
 # Install PostgreSQL dependencies
 RUN apt-get update && \
-    apt-get install -y postgresql-client libpq-dev supervisor elasticsearch && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y postgresql-client libpq-dev supervisor
 
 # Step 1: Install any Python packages
 # ----------------------------------------

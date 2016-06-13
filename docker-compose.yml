@@ -38,8 +38,8 @@ services:
     links:
       - db:db
     environment:
-      - DJANGO_SETTINGS_MODULE=config.settings.development
-      - DJANGO_ENV_FILE=.local.env
+      - DJANGO_SETTINGS_MODULE=config.settings.docker
+      - DJANGO_ENV_FILE=.docker.env
       - DJANGO_SECRET_KEY=stage-dummy-key1
       - RDS_DB_NAME=postgres
       - RDS_USERNAME=postgres
