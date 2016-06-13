@@ -28,7 +28,6 @@ RUN pip install gunicorn
 # Step 2: Copy Django Code
 # ----------------------------------------
 
-COPY .*env /var/app/
 COPY apps /var/app/apps
 COPY config /var/app/config
 COPY manage.py /var/app/manage.py

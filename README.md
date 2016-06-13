@@ -62,7 +62,7 @@ You must have the following installed on your computer
 
 * Python 3.4 or greater
 * Docker
-* nodeJS
+* nodeJS v4 or v5
 * bower
 
 For MacOS, see https://gist.github.com/dkarchmer/d8124f3ae1aa498eea8f0d658be214a5
@@ -132,20 +132,17 @@ Docker can be used to avoid having to install nodejs and python specific package
 To build the webapp static file (this part is not fully tested)
 
 ```
-docker build -t my_proj/builder .
-docker run --rm -v ${PWD}/webapp:/usr/src/app/webapp --entrypoint bower -t my_proj/builder install
-docker run --rm -i -v ${PWD}/webapp:/usr/src/app/webapp \
-                   -v ${PWD}/staticfiles/dist:/usr/src/app/staticfiles/dist
-                   -v ${PWD}/server/templates/dist:/usr/src/app/server/templates/dist
-                   -t my_proj/builder templates
+docker build -t my_proj/builder webapp
+docker run --rm -v ${PWD}/webapp:/usr/src/app --entrypoint bower -t my_proj/builder --allow-root --config.interactive=false install
+docker run --rm -v ${PWD}:/usr/src/app -t my_proj/builder templates
 ```
 
 After the webapp static files have been build, Docker Compose can be used to run the whole server, including a proper
 Postgres database. Note this is not intended for Production. For production, AWS Elastic Beanstalk should be used.
 
 ```
-docker-compose -f docker-compose.utest.yml     # To run a test using docker
-docker-compose -f docker-compose.yml           # To run server
+docker-compose -f docker-compose.utest.yml up     # To run a test within a Docker container
+docker-compose -f docker-compose.yml up           # To run Docker based server and databases
 ```
 
 ### Deployment ###

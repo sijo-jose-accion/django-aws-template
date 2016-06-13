@@ -20,4 +20,4 @@ def send_new_user_notification(id, username, email):
 
     subject = 'User @{0} (ID={1}) has registered with email {2}'.format(username, id, email)
 
-    logger.info(subject)
+    logger.debug(subject)
