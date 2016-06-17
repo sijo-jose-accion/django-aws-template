@@ -6,11 +6,14 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 import os
-from django.core.urlresolvers import reverse_lazy
-from django.contrib import messages
+import sys
 
 # Use 12factor inspired environment variables or from a file
 import environ
+
+from django.core.urlresolvers import reverse_lazy
+from django.contrib import messages
+
 
 # Build paths inside the project like this: join(BASE_DIR, "directory")
 BASE_PATH = environ.Path(__file__) - 3
@@ -26,7 +29,8 @@ env = environ.Env(
     DOMAIN_NAME=(str, 'mydomain.com'),
     DOMAIN_BASE_URL=(str, 'https://mydomain.com'),
     COMPANY_NAME=(str, 'COMPANY_NAME'),
-    INITIAL_ADMIN_EMAIL=(str, 'admin@mydomain.com')
+    INITIAL_ADMIN_EMAIL=(str, 'admin@mydomain.com'),
+    DJANGO_ENV_FILE = (str, '.local.env')
 )
 
 SITE_ID = 1
@@ -59,9 +63,14 @@ TEMPLATES = [
 
 # Ideally move env file should be outside the git repo
 # i.e. BASE_DIR.parent.parent
-env_file = os.path.join(os.path.dirname(__file__), '.local.env')
-if os.path.exists(env_file):
-    environ.Env.read_env(str(env_file))
+env_file = os.path.join(os.path.dirname(__file__), env('DJANGO_ENV_FILE'))
+
+if os.path.isfile(env_file):
+    print('Reading Env file: {0}'.format(env_file))
+    environ.Env.read_env(env_file)
+else:
+    print('Error!! No .env file: {0}'.format(env_file))
+    sys.exit(0)
 
 ADMINS = (
     # ('Username', 'your_email@domain.com'),

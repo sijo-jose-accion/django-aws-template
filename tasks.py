@@ -10,9 +10,10 @@ DEFAULT_SERVER_ENV_NAME = 'mydomain-1'
 PROFILE_OPT = '--profile {profile}'.format(profile=AWS_PROFILE)
 REGION_OPT = '--region {region}'.format(region=AWS_REGION)
 
-SERVER_AMI = '64bit Amazon Linux 2015.09 v2.0.8 running Python 3.4'
+SERVER_AMI = '64bit Amazon Linux 2016.03 v2.1.0 running Python 3.4'
 
 SERVER_INSTANCE_TYPE = 't2.micro'
+DB_CMD = '-db -db.i db.t2.micro -db.engine postgres -db.version 9.5 -db.user ebroot -db.pass pass.DB'
 
 
 @task
@@ -25,11 +26,12 @@ def create(env=DEFAULT_SERVER_ENV_NAME, app=DEFAULT_SERVER_APP_NAME):
 
     # basic = '--timeout 30 --instance_type t2.micro --service-role aws-elasticbeanstalk-service-role'
     basic = '--timeout 30 --instance_type {0}'.format(SERVER_INSTANCE_TYPE)
-    run("eb create {basic} {region} {profile} -c {cname} {name}".format(basic=basic,
-                                                                        region=REGION_OPT,
-                                                                        profile=PROFILE_OPT,
-                                                                        cname=env,
-                                                                        name=env))
+    run("eb create {basic} {db} {region} {profile} -c {cname} {name}".format(basic=basic,
+                                                                             db=DB_CMD,
+                                                                             region=REGION_OPT,
+                                                                             profile=PROFILE_OPT,
+                                                                             cname=env,
+                                                                             name=env))
 
 @task
 def deploy(type='server'):
