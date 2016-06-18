@@ -15,4 +15,5 @@
 staticfiles/*
 !staticfiles/README.md
 server/templates/dist/
+.awspublish-strato-statics
 

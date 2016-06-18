@@ -1,5 +1,6 @@
 # In production set the environment variable like this:
 #    DJANGO_SETTINGS_MODULE=config.settings.production
+import socket
 from .base import *             # NOQA
 import logging.config
 
@@ -19,6 +20,10 @@ if enable_security:
     '''
     os.environ['HTTPS'] = "on"
     # Must mention ALLOWED_HOSTS in production!
+    local_ip = str(socket.gethostbyname(socket.gethostname()))
+    print ('hostname: ' + socket.gethostname())
+    print ('hostbyname: ' + local_ip)
+
     # ALLOWED_HOSTS=[local_ip, '.mydomain.com', 'myapp.elasticbeanstalk.com' ]
 else:
     ALLOWED_HOSTS = ['*', ]

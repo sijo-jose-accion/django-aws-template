@@ -143,11 +143,24 @@ WSGI_APPLICATION = 'config.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
-DATABASES = {
-    # Raises ImproperlyConfigured exception if DATABASE_URL not in
-    # os.environ
-    'default': env.db(),
-}
+if PRODUCTION:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql_psycopg2',
+            'NAME': os.environ['RDS_DB_NAME'],
+            'USER': os.environ['RDS_USERNAME'],
+            'PASSWORD': os.environ['RDS_PASSWORD'],
+            'HOST': os.environ['RDS_HOSTNAME'],
+            'PORT': os.environ['RDS_PORT'],
+            'CONN_MAX_AGE': 600,
+        }
+    }
+else:
+    DATABASES = {
+        # Raises ImproperlyConfigured exception if DATABASE_URL not in
+        # os.environ
+        'default': env.db(),
+    }
 
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
@@ -280,12 +293,20 @@ ACCOUNT_FORMS = {
     'signup': 'apps.authentication.forms.AllauthSignupForm'
 }
 
+if PRODUCTION:
+    # For production, hard code to file created by .ebextensions
+    LOG_FILEPATH = '/opt/python/log/my.log'
+else:
+    LOG_FILEPATH = os.path.join(str(LOG_FILE), 'server.log')
+
+
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
     'formatters': {
         'verbose': {
-            'format': '%(levelname)s %(asctime)s %(module)s %(process)d %(thread)d %(message)s'
+            'format': "[%(asctime)s] %(levelname)s [%(name)s:%(lineno)s] %(message)s",
+            'datefmt': "%d/%b/%Y %H:%M:%S"
         },
         'simple': {
             'format': '%(levelname)s %(message)s'
@@ -300,7 +321,7 @@ LOGGING = {
         'default': {
             'level': 'DEBUG',
             'class': 'logging.handlers.RotatingFileHandler',
-            'filename': os.path.join(str(LOG_FILE), 'server.log'),
+            'filename': LOG_FILEPATH,
             'maxBytes': 1024 * 1024 * 5,  # 5MB
             'backupCount': 5,
             'formatter': 'simple'
