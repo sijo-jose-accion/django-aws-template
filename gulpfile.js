@@ -18,6 +18,7 @@ gulp.paths = {
     templates: 'server/templates/dist'
 };
 
+// EDIT with your own settings
 var aws = {
     params: {
         Bucket: "mystaticbucket",

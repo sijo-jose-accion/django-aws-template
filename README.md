@@ -54,9 +54,9 @@ This project has the following basic features:
 * Custom Authentication Model with django-allauth
 * Rest API
 
-## Installation ##
+## Installation
 
-### Assumptions ###
+### Assumptions
 
 You must have the following installed on your computer
 
@@ -82,7 +82,7 @@ $ cp server/config/settings/sample-docker.env server/config/settings/.docker.env
 $ cp server/config/settings/sample-production.env server/config/settings/.production.env
 ```
 
-### Static Files ###
+### Static Files
 
 We use nodeJS with Gulp and Bower to process static files:
 
@@ -116,14 +116,14 @@ It also creates django-allauth SocialApp records for Facebook, Google and Twitte
 
 
 
-### Testing ###
+### Testing
 
 ```
 $ cd ../server
 $ python manage.py test
 ```
 
-### Using Docker: ###
+### Using Docker
 
 I am not documenting how to install the template with docker, so you will need a local copy of python and django to install the template, but once installed (i.e., the project is on your file system), you can use docker for everything else
 
@@ -146,15 +146,39 @@ docker-compose -f docker-compose.utest.yml up     # To run a test within a Docke
 docker-compose -f docker-compose.yml up           # To run Docker based server and databases
 ```
 
-### Deployment ###
+## Elastic Beanstack Deployment
 
-To be completed but something like:
+Review all files under `server/.ebextensions`, and modify if needed. Note that many settings are
+commented out as they require your own AWS settings.
+
+For early development, the `create` command will ask *Elastic Beanstalk (EB)* to create and manage its own
+RDS Postgres database. This also means that when the *EB* environment is terminated, the database will be
+terminated as well.
+
+Once the models are more stable, and for sure for production, it is recommended that you create your own
+RDS database (outside *EB*), and simply tell Django to use that. The `.ebextensions/01_main.config` has
+a bunch of `RDS_` environment variables (commented out) to use for this. Simply enable them, and set the
+proper RDS address.
+
+### Creating the environment
+
+Make sure you have search for all instances of `mydomain` in the code and replace with the proper settings.
+Also make sure you have created your own `server/config/settings/.production.env` based on the
+`sample-production.env` file.
+
+Look for the `EDIT` comments in `tasks.py` and `gulpfile.js` and edit as needed.
+
+After your have done all the required editing, the `create` Invoke command will run *Gulp* to deploy all static files,
+and then do the `eb init` and `eb create`:
 
 ```
 invoke create
 ```
 
-and then deploy changes with
+### Deployment (development cycle)
+
+After your have created the environment, you can deploy code changes with the following command (which will run *Gulp*
+and `eb deploy`:
 
 ```
 invoke deploy

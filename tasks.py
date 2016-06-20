@@ -1,9 +1,11 @@
 import os
 from invoke import run, task
 
+# EDIT with your own settings
 AWS_PROFILE = 'myprofile'
 AWS_REGION  = 'myawsregion'
 
+# EDIT with your own settings
 DEFAULT_SERVER_APP_NAME = 'mydomain'
 DEFAULT_SERVER_ENV_NAME = 'mydomain-1'
 
@@ -13,6 +15,10 @@ REGION_OPT = '--region {region}'.format(region=AWS_REGION)
 SERVER_AMI = '64bit Amazon Linux 2016.03 v2.1.0 running Python 3.4'
 
 SERVER_INSTANCE_TYPE = 't2.micro'
+# Use Elastic Beanstalk managed RDS database early during development
+# But it is recommended to later switch to your own RDS outside EB, especially for production.
+# This makes it easy to destroy the EB environment without destroying the database
+# Note that you will need to set the env variables on .ebextensions/01_main.config
 DB_CMD = '-db -db.i db.t2.micro -db.engine postgres -db.version 9.5 -db.user ebroot -db.pass pass.DB'
 
 
