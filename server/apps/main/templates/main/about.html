@@ -1,0 +1,22 @@
+{% templatetag openblock %}  extends "base.html" {% templatetag closeblock %}
+{% templatetag openblock %}  load staticfiles {% templatetag closeblock %}
+{% templatetag openblock %}  load i18n {% templatetag closeblock %}
+
+{% templatetag openblock %} block content {% templatetag closeblock %}
+
+      <div class="jumbotron">
+        <h1>About this site</h1>
+        <p class="lead">Hope this template helps you out</p>
+      </div>
+
+      <div class="row marketing">
+        <div class="col-lg-6">
+           <p>Template generated with <a href="https://github.com/dkarchmer/django-aws-template">django-aws-template</a><p>
+        </div>
+      </div>
+
+      <div class="footer">
+        <p>♥ django_aws_template </p>
+      </div>
+    </div>
+{% templatetag openblock %} endblock content {% templatetag closeblock %}

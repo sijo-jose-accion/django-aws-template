@@ -6,6 +6,7 @@ from .views import *
 
 urlpatterns = [
      url(r'^$', HomeIndexView.as_view(), name='home'),
+     url(r'^about/$', AboutView.as_view(), name='about'),
      url(r'^message/send/$', ContactCreateView.as_view(), name='send-message'),
      # ---------------------------------
      url(r'^jsi18n', i18n_javascript),

@@ -102,3 +102,5 @@ class ContactCreateView(CreateView):
         return HttpResponseRedirect('/')
 
 
+class AboutView(TemplateView):
+    template_name = 'main/about.html'

@@ -33,6 +33,8 @@ $ django-admin.py startproject --template=https://github.com/dkarchmer/django-aw
 
 The do the following manual work:
 
+* Create a .ebextensions directory with decired Elastic Beanstalk options. See https://github.com/dkarchmer/django-aws-template/tree/master/server/.ebextensions
+
 * Search and replace `mydomain` with your own domain
 * Search and replace `mystaticbucket` with your own S3 Bucket Name
 * Search and replace `myawsregion` with your own AWS_REGION
