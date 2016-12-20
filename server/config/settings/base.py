@@ -69,8 +69,7 @@ if os.path.isfile(env_file):
     print('Reading Env file: {0}'.format(env_file))
     environ.Env.read_env(env_file)
 else:
-    print('Error!! No .env file: {0}'.format(env_file))
-    sys.exit(0)
+    print('Warning!! No .env file: {0}'.format(env_file))
 
 ADMINS = (
     # ('Username', 'your_email@domain.com'),

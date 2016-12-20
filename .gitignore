@@ -5,6 +5,10 @@
 !.elasticbeanstalk/*.cfg.yml
 !.elasticbeanstalk/*.global.yml
 
+.cache/
+.coverage
+htmlcov/
+
 *.sqlite3
 *.pyc
 .env
