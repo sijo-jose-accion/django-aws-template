@@ -5,9 +5,8 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install -r server/requirements/development.txt
-  - mkdir build
   - cd build
-  - django-admin.py startproject --template=../ --extension=py,md,html,env my_proj
+  - django-admin.py startproject --template=.. --extension=py,md,html,env my_proj
   - cd my_proj/server
   - cp config/settings/local.sample.env config/settings/.local.env
   - python manage.py migrate
