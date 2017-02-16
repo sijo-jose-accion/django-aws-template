@@ -4,6 +4,7 @@ python:
   - "3.4"
 install:
   - pip install -r requirements.txt
+  - pip install -r server/requirements/development.txt
   - cd ..
   - django-admin.py startproject --template=./django-aws-template --extension=py,md,html,env my_proj
   - cd my_proj/server
