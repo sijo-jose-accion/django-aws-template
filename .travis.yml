@@ -5,7 +5,8 @@ python:
 install:
   - pip install -r requirements.txt
   - pip install -r server/requirements/development.txt
-  - cd ..
+  - mkdir build
+  - cd build
   - django-admin.py startproject --template=./django-aws-template --extension=py,md,html,env my_proj
   - cd my_proj/server
   - cp config/settings/local.sample.env config/settings/.local.env
