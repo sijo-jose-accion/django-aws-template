@@ -86,7 +86,9 @@ $ cp server/config/settings/sample-production.env server/config/settings/.produc
 
 ### Static Files
 
-We use nodeJS with Gulp and Bower to process static files:
+We use nodeJS with Gulp and Bower to process static files. The Gulp file also contains the required code to deploy these static files to S3 and/or CloudWatch, which is the best way to deploy static files when using AWS based environments.
+
+This is probably the most complicated part of this environment, but probably also the most innocative part. Gulp/Bower was selected (instead of plain Django `collectstatics`) because any proffesional site will end up with a lot of frontend code (using both HTML and JavaScript), and you will end up with a lot of javascript dependencies that require a good managing system. So, just like `pip` is great for Python, you need something like `bower` for javascript dependencies. And you want a modern frontend build flow like Gulp to ensure all your static files are minimized and compied into a couple of CSS and JS files. Gulp does that very well.
 
 ```
 $ cd webapp
@@ -95,7 +97,11 @@ $ npm install
 $ gulp
 ```
 
-But we also need all static files for third party Django libraries
+And important thing to understand is that we are basically creating the `base.html` template used by Django so these file needs to be moved (moved by the Gulp flow) to the Django `/templates` directory, so Django treats it like any other template that you could have created. The difference is that rather than that base template to be under version control, it is produced by the Gulp flow. This means that every time you change that base template (or the static CSS/JS), you need to run gulp again so it is copied again to the `/templates` directory. If you don't do this, and you try to run the local django server (or deploy it to AWS EB), the Django views will error out with a "Template not found" error.
+
+Note alos we that we only build our own front end dependencies using Gulp. But Django comes with its own static files (for the Admin pages, for example), and you may be using popular libraries like `djangorestframework` or `django-crisp` which may include their own static files. Because of this, you still need to run the normal Django `collectstatics` command. Note that the configuration in the settings file will make `collectstatics` copy all these files to the `/statics` directory, which is also where the `gulp` flow will copy the distribution files. `/statics` is the directory we ultimately release static files from. The top level. The toplevel `gulp deploy` uploads all these files to an S3 bucket to either service the static files from, or as source to your CloudWatch CDN.
+
+To collect Django statics, run:
 
 ```
 cd ../server
@@ -116,6 +122,7 @@ $ python manage.py init-basic-data
 Make sure you change the password right away.
 It also creates django-allauth SocialApp records for Facebook, Google and Twitter (to avoid later errors). You will have to modify these records (from admin pages) with your own secret keys, or remove these social networks from the settings.
 
+For the production server, I recommend you do NOT let elastic beanstalk create the database, and instead manually create an RDS instance. This is not done by default in this template, but you can find several comments explaining how to configure a standa-alone RDS instance when ready.
 
 
 ### Testing
@@ -127,7 +134,9 @@ $ python manage.py test
 
 ### Using Docker
 
-I am not documenting how to install the template with docker, so you will need a local copy of python and django to install the template, but once installed (i.e., the project is on your file system), you can use docker for everything else
+You do not need docker at all, if you don't want it, but Docker is a great way to ensure all developers are running he same setup (a setup that is close to the AWS environment you will run in production). Docker is also a good way to ensure the build files work across different hosts. Finally, the included docker-compose file is a good way to run a testing and/or staging server for final testing, which allows you to do proper testing with a real Postgres database like the one in RDS.
+
+Once you have docker installed (see instrucitons on docker web site), you will be able to build the next set of images.
 
 Docker can be used to avoid having to install nodejs and python specific packages.
 
@@ -151,7 +160,7 @@ docker-compose -f docker-compose.yml up           # To run Docker based server a
 ## Elastic Beanstack Deployment
 
 Review all files under `server/.ebextensions`, and modify if needed. Note that many settings are
-commented out as they require your own AWS settings.
+commented out as they require your own AWS settings. For example, `03-loadbalancer.config` shows how you would configure your ACM based SSL certificate. `04_notifications.config` shows how you may want to confirgure the SNS notifications to use a preconfigured topic, rather than EB creating one for you. `02_ec2.config` shows how to configure EB to use a specifc IAM role or a specific security group. Also something you will want to do.
 
 For early development, the `create` command will ask *Elastic Beanstalk (EB)* to create and manage its own
 RDS Postgres database. This also means that when the *EB* environment is terminated, the database will be
@@ -180,7 +189,7 @@ invoke create
 ### Deployment (development cycle)
 
 After your have created the environment, you can deploy code changes with the following command (which will run *Gulp*
-and `eb deploy`:
+and `eb deploy`):
 
 ```
 invoke deploy
