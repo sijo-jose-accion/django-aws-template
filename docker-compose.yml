@@ -10,7 +10,7 @@ services:
       - /data
 
   db:
-    image: postgres:9.4
+    image: postgres:9.6
     ports:
       - "5432:5432"
     volumes_from:
@@ -46,4 +46,5 @@ services:
       - RDS_PASSWORD=''
       - RDS_HOSTNAME=db
       - RDS_PORT=5432
+      - DATABASE_URL=postgres://postgres@db/postgres
 

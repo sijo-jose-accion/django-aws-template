@@ -11,7 +11,7 @@ import sys
 # Use 12factor inspired environment variables or from a file
 import environ
 
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.contrib import messages
 
 
@@ -93,7 +93,6 @@ COMPANY_NAME = env('COMPANY_NAME')
 
 DJANGO_APPS = (
     'django.contrib.auth',
-    'django_admin_bootstrapped',
     'django.contrib.admin',
     'django.contrib.contenttypes',
     'django.contrib.sites',
@@ -123,7 +122,7 @@ COMMON_APPS = (
 
 INSTALLED_APPS = DJANGO_APPS + COMMON_APPS + THIRD_PARTY_APPS
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -132,8 +131,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'apps.utils.timezoneMiddleware.TimezoneMiddleware',
-)
-
+]
 
 ROOT_URLCONF = 'config.urls'
 
@@ -237,7 +235,7 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ),
 
-    'DEFAULT_FILTER_BACKENDS': ('rest_framework.filters.DjangoFilterBackend',),
+    'DEFAULT_FILTER_BACKENDS': ('django_filters.rest_framework.DjangoFilterBackend',),
     'DEFAULT_PAGINATION_CLASS': 'apps.utils.pagination.StandardResultsSetPagination'
 }
 

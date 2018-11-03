@@ -20,7 +20,7 @@ and djangorestframework for a rest API.
 - Gulp based flow to build CSS/JS files and release directly to s3/cloudfront (based on `yo webapp`)
 - Better Security with 12-Factor recommendations
 - Logging/Debugging Helpers
-- Works on Python 3.4+ (should work on 2.7+ but has not been actively tested)
+- Works on Python 3.6+
 
 ### Quick start: ###
 
@@ -62,33 +62,94 @@ This project has the following basic features:
 
 You must have the following installed on your computer
 
-* Python 3.4 or greater
-* Docker
-* nodeJS v4 or v5
+* Python 3.6 or greater
+* Docker and docker-compose
+
+If not using docker, te following dependencies are also needed:
+
+* nodeJS v5
 * bower
 
 For MacOS, see https://gist.github.com/dkarchmer/d8124f3ae1aa498eea8f0d658be214a5
 
-### Python Environment ###
 
-To set up a development environment quickly, first install Python 3. It comes with virtualenv built-in. So create a virtual env by:
+## Using Docker (preferred)
+
+While everything can be built and run natively on your computer, using Docker ensures you use a tested environment
+that is more likely to run on any computer. Installing the exact version of NodeJS, for example, is particularly
+challenging.
+
+Once you have docker and docker-compose installed (see instructions on docker web site), you will be able to build the next set of images.
+
+This project builds the top level Django template file and all static files using modern techniques to ensure all
+static files are minized and ready for a CDN.
+
+Before you can start, you need to create a .docker.env file on your server/config/settings directory:
 
 ```
-$ python3 -m venv  ~/.virtualenv/iotile
-$ .  ~/.virtualenv/iotile/bin/activate
+$ cp server/config/settings/sample-docker.env server/config/settings/.docker.env
+```
+
+This creates a little extra complexity, but is not a big deal when using Docker. Follow the instructions below
+carefully:
+
+### Building Static Files
+
+These steps have to be run at least once, and every time the webapp is changed or new django statics are added (e.g.
+a new version of a package is installed)
+
+```
+# 1a.- Build WebApp using Gulp
+docker build -t webapp/builder webapp
+docker run --rm -v ${PWD}/webapp:/var/app/webapp -v ${PWD}/server:/var/app/server -v ${PWD}/staticfiles:/var/app/staticfiles -t webapp/builder bower install --allow-root
+docker run --rm -v ${PWD}/webapp:/var/app/webapp -v ${PWD}/server:/var/app/server -v ${PWD}/staticfiles:/var/app/staticfiles -t webapp/builder npm install
+docker run --rm -v ${PWD}/webapp:/var/app/webapp -v ${PWD}/server:/var/app/server -v ${PWD}/staticfiles:/var/app/staticfiles -t webapp/builder gulp
+
+# 1b.- Or run sh script
+sh build-webapp.sh
+
+# 2.- Adding any Django package statics
+docker-compose build web
+docker-compose run --rm web python manage.py collectstatic --noinput
+```
+
+### Running Unit Test with docker compose
+
+After the webapp static files have been build, Docker Compose can be used to run the unit test.
+
+```
+docker-compose -f docker-compose.utest.yml run --rm web
+```
+
+### Running local server with docker compose
+
+To run the local server to test on your local host, use docker compose like:
+
+```
+docker-compose build    # Build all containers
+docker-compose up -d    # Run containers in background
+docker-compose logs web # Shows logs for web container (django server)
+docker-compose down     # shutdown containers
+```
+
+## Python Environment ###
+
+It is not recommended to run on native python (you are on your own if you do), but you can do this with:
+
+```
+$ python3 -m venv  ~/.virtualenv/myproject
+$ .  ~/.virtualenv/myproject/bin/activate
 $ pip install -U pip
 $ pip install -r requirements.txt
 $ pip install -r server/requirements.txt
 $ cp server/config/settings/sample-local.env server/config/settings/.local.env
-$ cp server/config/settings/sample-docker.env server/config/settings/.docker.env
-$ cp server/config/settings/sample-production.env server/config/settings/.production.env
 ```
 
 ### Static Files
 
-We use nodeJS with Gulp and Bower to process static files. The Gulp file also contains the required code to deploy these static files to S3 and/or CloudWatch, which is the best way to deploy static files when using AWS based environments.
+We use nodeJS (v5) with Gulp and Bower to process static files. The Gulp file also contains the required code to deploy these static files to S3 and/or CloudWatch, which is the best way to deploy static files when using AWS based environments.
 
-This is probably the most complicated part of this environment, but probably also the most innocative part. Gulp/Bower was selected (instead of plain Django `collectstatics`) because any proffesional site will end up with a lot of frontend code (using both HTML and JavaScript), and you will end up with a lot of javascript dependencies that require a good managing system. So, just like `pip` is great for Python, you need something like `bower` for javascript dependencies. And you want a modern frontend build flow like Gulp to ensure all your static files are minimized and compied into a couple of CSS and JS files. Gulp does that very well.
+This is probably the most complicated part of this environment, but probably also the most innovative part. Gulp/Bower was selected (instead of plain Django `collectstatics`) because any proffesional site will end up with a lot of frontend code (using both HTML and JavaScript), and you will end up with a lot of javascript dependencies that require a good managing system. So, just like `pip` is great for Python, you need something like `bower` for javascript dependencies. And you want a modern frontend build flow like Gulp to ensure all your static files are minimized and compied into a couple of CSS and JS files. Gulp does that very well.
 
 ```
 $ cd webapp
@@ -99,7 +160,7 @@ $ gulp
 
 And important thing to understand is that we are basically creating the `base.html` template used by Django so these file needs to be moved (moved by the Gulp flow) to the Django `/templates` directory, so Django treats it like any other template that you could have created. The difference is that rather than that base template to be under version control, it is produced by the Gulp flow. This means that every time you change that base template (or the static CSS/JS), you need to run gulp again so it is copied again to the `/templates` directory. If you don't do this, and you try to run the local django server (or deploy it to AWS EB), the Django views will error out with a "Template not found" error.
 
-Note alos we that we only build our own front end dependencies using Gulp. But Django comes with its own static files (for the Admin pages, for example), and you may be using popular libraries like `djangorestframework` or `django-crisp` which may include their own static files. Because of this, you still need to run the normal Django `collectstatics` command. Note that the configuration in the settings file will make `collectstatics` copy all these files to the `/statics` directory, which is also where the `gulp` flow will copy the distribution files. `/statics` is the directory we ultimately release static files from. The top level. The toplevel `gulp deploy` uploads all these files to an S3 bucket to either service the static files from, or as source to your CloudWatch CDN.
+Note also we that we only build our own front end dependencies using Gulp. But Django comes with its own static files (for the Admin pages, for example), and you may be using popular libraries like `djangorestframework` or `django-crisp` which may include their own static files. Because of this, you still need to run the normal Django `collectstatics` command. Note that the configuration in the settings file will make `collectstatics` copy all these files to the `/statics` directory, which is also where the `gulp` flow will copy the distribution files. `/statics` is the directory we ultimately release static files from. The top level. The toplevel `gulp deploy` uploads all these files to an S3 bucket to either service the static files from, or as source to your CloudWatch CDN.
 
 To collect Django statics, run:
 
@@ -132,30 +193,6 @@ $ cd ../server
 $ python manage.py test
 ```
 
-### Using Docker
-
-You do not need docker at all, if you don't want it, but Docker is a great way to ensure all developers are running he same setup (a setup that is close to the AWS environment you will run in production). Docker is also a good way to ensure the build files work across different hosts. Finally, the included docker-compose file is a good way to run a testing and/or staging server for final testing, which allows you to do proper testing with a real Postgres database like the one in RDS.
-
-Once you have docker installed (see instrucitons on docker web site), you will be able to build the next set of images.
-
-Docker can be used to avoid having to install nodejs and python specific packages.
-
-To build the webapp static file (this part is not fully tested)
-
-```
-docker build -t my_proj/builder webapp
-docker run --rm -v ${PWD}/webapp:/usr/src/app --entrypoint npm -t my_proj/builder install
-docker run --rm -v ${PWD}/webapp:/usr/src/app --entrypoint bower -t my_proj/builder --allow-root --config.interactive=false install
-docker run --rm -v ${PWD}:/usr/src/app -t my_proj/builder templates
-```
-
-After the webapp static files have been build, Docker Compose can be used to run the whole server, including a proper
-Postgres database. Note this is not intended for Production. For production, AWS Elastic Beanstalk should be used.
-
-```
-docker-compose -f docker-compose.utest.yml up     # To run a test within a Docker container
-docker-compose -f docker-compose.yml up           # To run Docker based server and databases
-```
 
 ## Elastic Beanstack Deployment
 
@@ -170,6 +207,15 @@ Once the models are more stable, and for sure for production, it is recommended 
 RDS database (outside *EB*), and simply tell Django to use that. The `.ebextensions/01_main.config` has
 a bunch of `RDS_` environment variables (commented out) to use for this. Simply enable them, and set the
 proper RDS address.
+
+Before you can start, you need to create a `.production.env` file with all your secrets:
+
+```
+$ cp server/config/settings/sample-production.env server/config/settings/.production.env
+```
+
+Because you are about to deploy, you must update that .production.env with your actual secrets and domain
+specific information.
 
 ### Creating the environment
 
