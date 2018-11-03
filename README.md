@@ -6,10 +6,11 @@
 
 An opinionated Django project starter intended for people that will release to AWS. It assumes
 
+1. Django 2.1+
 1. main django server will be released to AWS Elastic Beanstalk,
-2. static files will be released to s3/cloudfront using a gulp based flow (not django collectstatics)
-3. Use docker for development/testing
-4. Use a common set of django packages for the basics. In particular, django-allauth for social authentication
+1. static files will be released to s3/cloudfront using a gulp based flow (not django collectstatics)
+1. Use docker for development/testing
+1. Use a common set of django packages for the basics. In particular, django-allauth for social authentication
 and djangorestframework for a rest API.
 
 ### Features ###
@@ -20,7 +21,7 @@ and djangorestframework for a rest API.
 - Gulp based flow to build CSS/JS files and release directly to s3/cloudfront (based on `yo webapp`)
 - Better Security with 12-Factor recommendations
 - Logging/Debugging Helpers
-- Works on Python 3.6+
+- Works on Python 3.6+ with Django 2.1+
 
 ### Quick start: ###
 
